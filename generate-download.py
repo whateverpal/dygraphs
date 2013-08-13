@@ -10,7 +10,7 @@ releases = json.load(file('releases.json'))
 
 def file_links(release):
   v = release['version']
-  return ['<a href="%(v)s/%(f)s">%(f)s</a>' % {
+  return ['<a href="/%(v)s/%(f)s">%(f)s</a>' % {
     'f': f, 'v': v} for f in release['files']]
 
 
@@ -27,7 +27,7 @@ current_html = '<p>' + ('</p><p>'.join(file_links(releases[0]))) + '</p>'
 
 previous_lis = []
 for release in releases[1:]:
-  previous_lis.append('<li>%(v)s: %(files)s (<a href="%(v)s/">%(v)s docs</a>)' % {
+  previous_lis.append('<li>%(v)s: %(files)s (<a href="/%(v)s/">%(v)s docs</a>)' % {
       'v': release['version'],
       'files': ', '.join(file_links(release))
     })
