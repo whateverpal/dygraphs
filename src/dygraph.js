@@ -127,6 +127,7 @@ Dygraph.addedAnnotationCSS = false;
  */
 Dygraph.prototype.__init__ = function(div, file, attrs) {
   this.is_initial_draw_ = true;
+  this.destroyed = false;
   this.readyFns_ = [];
 
   // Support two-argument constructor
@@ -927,6 +928,7 @@ Dygraph.prototype.destroy = function() {
   nullOut(this.layout_);
   nullOut(this.plotter_);
   nullOut(this);
+  this.destroyed = true;
 };
 
 /**
@@ -1036,7 +1038,7 @@ Dygraph.prototype.getPropertiesForSeries = function(series_name) {
     name: series_name,
     column: idx,
     visible: this.visibility()[idx - 1],
-    color: this.colorsMap_[series_name],
+    color: this.colorsMap_ != null ? this.colorsMap_[series_name] : null,
     axis: 1 + this.attributes_.axisForSeries(series_name)
   };
 };
@@ -2012,7 +2014,9 @@ Dygraph.prototype.predraw_ = function() {
   this.rolledSeries_ = [null];  // x-axis is the first series and it's special
   for (var i = 1; i < this.numColumns(); i++) {
     // var logScale = this.attr_('logscale', i); // TODO(klausw): this looks wrong // konigsberg thinks so too.
-    var series = this.dataHandler_.extractSeries(this.rawData_, i, this.attributes_);
+    let axisIndex = this.getPropertiesForSeries(this.getLabels()[i]).axis - 1;
+    let logScale = this.getOptionForAxis("logscale", axisIndex);
+    var series = this.dataHandler_.extractSeries(this.rawData_, i, this.attributes_, logScale);
     if (this.rollPeriod_ > 1) {
       series = this.dataHandler_.rollingAverage(series, this.rollPeriod_, this.attributes_);
     }
@@ -2268,6 +2272,9 @@ Dygraph.prototype.gatherDatasets_ = function(rolledSeries, dateWindow) {
  * @private
  */
 Dygraph.prototype.drawGraph_ = function() {
+  if (this.destroyed)
+    return;
+
   var start = new Date();
 
   // This is used to set the second parameter to drawCallback, below.

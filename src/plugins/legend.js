@@ -102,10 +102,16 @@ Legend.prototype.select = function(e) {
     return;
   }
 
+  var html = Legend.generateLegendHTML(e.dygraph, xValue, points, this.one_em_width_, row);
+  this.legend_div_.innerHTML = html;
+  this.legend_div_.style.display = '';
+
   if (legendMode === 'follow') {
     // create floating legend div
     var area = e.dygraph.plotter_.area;
     var labelsDivWidth = this.legend_div_.offsetWidth;
+    let labelsDivHeight = this.legend_div_.offsetHeight;
+    
     var yAxisLabelWidth = e.dygraph.getOptionForAxis('axisLabelWidth', 'y');
     // determine floating [left, top] coordinates of the legend div
     // within the plotter_ area
@@ -120,14 +126,14 @@ Legend.prototype.select = function(e) {
       leftLegend = leftLegend - 2 * 50 - labelsDivWidth - (yAxisLabelWidth - area.x);
     }
 
+    if ((topLegend + labelsDivHeight + 1) > area.h) {
+      topLegend = area.h - labelsDivHeight - 1;
+    }
+
     e.dygraph.graphDiv.appendChild(this.legend_div_);
     this.legend_div_.style.left = yAxisLabelWidth + leftLegend + "px";
     this.legend_div_.style.top = topLegend + "px";
   }
-
-  var html = Legend.generateLegendHTML(e.dygraph, xValue, points, this.one_em_width_, row);
-  this.legend_div_.innerHTML = html;
-  this.legend_div_.style.display = '';
 };
 
 Legend.prototype.deselect = function(e) {

@@ -91,7 +91,7 @@ handler.EXTRAS = 2;
  * @return {Array.<[!number,?number,?]>} The series in the unified data format
  *     where series[i] = [x,y,{extras}].
  */
-handler.prototype.extractSeries = function(rawData, seriesIndex, options) {
+handler.prototype.extractSeries = function(rawData, seriesIndex, options, logScale) {
 };
 
 /**

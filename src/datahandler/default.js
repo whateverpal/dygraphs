@@ -24,10 +24,9 @@ var DefaultHandler = function() {
 DefaultHandler.prototype = new DygraphDataHandler();
 
 /** @inheritDoc */
-DefaultHandler.prototype.extractSeries = function(rawData, i, options) {
+DefaultHandler.prototype.extractSeries = function(rawData, i, options, logScale) {
   // TODO(danvk): pre-allocate series here.
   var series = [];
-  var logScale = options.get('logscale');
   for ( var j = 0; j < rawData.length; j++) {
     var x = rawData[j][0];
     var point = rawData[j][i];

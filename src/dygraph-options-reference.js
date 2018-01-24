@@ -821,6 +821,13 @@ OPTIONS_REFERENCE =  // <JSON>
     "labels": ["Data"],
     "type": "Dygraph.DataHandler",
     "description": "Custom DataHandler. This is an advanced customization. See http://bit.ly/151E7Aq."
+  },
+  "disableVerticalZoom":
+  {
+    "default": "false",
+    "labels": ["Configuration"],
+    "type": "boolean",
+    "description": "Disable vertical zoom"
   }
 }
 ;  // </JSON>

@@ -273,7 +273,7 @@ DygraphInteraction.moveZoom = function(event, g, context) {
   var yDelta = Math.abs(context.dragStartY - context.dragEndY);
 
   // drag direction threshold for y axis is twice as large as x axis
-  context.dragDirection = (xDelta < yDelta / 2) ? utils.VERTICAL : utils.HORIZONTAL;
+  context.dragDirection = !g.getBooleanOption("disableVerticalZoom") && (xDelta < yDelta / 2) ? utils.VERTICAL : utils.HORIZONTAL;
 
   g.drawZoomRect_(
       context.dragDirection,
